@@ -30,39 +30,42 @@ const Track = ({
 
   const originalChildren = useMemo(
     () => {
-      return React.Children.map(children, (child, idx) => {
-        const isVisible = idx >= minVisibleItem && idx < maxVisibleItem;
-        const isPrevItem = !isVisible && idx >= prevItem && idx < currentItem;
-        const isNextItem = !isVisible && idx < nextItem && idx > currentItem;
-        const itemClass = "carousel-item";
+      return React.Children.map(
+        React.Children.toArray(children),
+        (child, idx) => {
+          const isVisible = idx >= minVisibleItem && idx < maxVisibleItem;
+          const isPrevItem = !isVisible && idx >= prevItem && idx < currentItem;
+          const isNextItem = !isVisible && idx < nextItem && idx > currentItem;
+          const itemClass = "carousel-item";
 
-        const childToRender = autoTabIndexVisibleItems
-          ? React.cloneElement(child, {
-              tabIndex: isVisible ? 0 : -1
-            })
-          : child;
-        return (
-          <div
-            className={cssPrefix(
-              itemClass,
-              `${itemClass}-${idx}`,
-              `${itemClass}-${isVisible ? "visible" : "hidden"}`,
-              isPrevItem && `${itemClass}-prev`,
-              isNextItem && `${itemClass}-next`
-            )}
-          >
-            <ItemWrapperContainer
-              id={idx}
-              itemPosition={itemPosition}
-              style={{ width, padding: paddingStyle }}
-              key={idx}
-              onClick={onItemClick}
+          const childToRender = autoTabIndexVisibleItems
+            ? React.cloneElement(child, {
+                tabIndex: isVisible ? 0 : -1
+              })
+            : child;
+          return (
+            <div
+              className={cssPrefix(
+                itemClass,
+                `${itemClass}-${idx}`,
+                `${itemClass}-${isVisible ? "visible" : "hidden"}`,
+                isPrevItem && `${itemClass}-prev`,
+                isNextItem && `${itemClass}-next`
+              )}
             >
-              {childToRender}
-            </ItemWrapperContainer>
-          </div>
-        );
-      });
+              <ItemWrapperContainer
+                id={idx}
+                itemPosition={itemPosition}
+                style={{ width, padding: paddingStyle }}
+                key={idx}
+                onClick={onItemClick}
+              >
+                {childToRender}
+              </ItemWrapperContainer>
+            </div>
+          );
+        }
+      );
     },
     [
       children,
