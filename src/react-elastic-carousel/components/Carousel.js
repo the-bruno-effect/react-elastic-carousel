@@ -852,7 +852,7 @@ class Carousel extends React.Component {
             >
               <Track
                 verticalMode={verticalMode}
-                children={Children.toArray(children)}
+                children={children}
                 childWidth={childWidth}
                 currentItem={activeIndex}
                 autoTabIndexVisibleItems={autoTabIndexVisibleItems}
