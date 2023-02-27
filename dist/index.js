@@ -13,32 +13,6 @@ var cx = _interopDefault(require('classnames'));
 var ResizeObserver = _interopDefault(require('resize-observer-polyfill'));
 var Only = _interopDefault(require('react-only-when'));
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-    });
-  }
-
-  return target;
-}
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -58,9 +32,6 @@ function _defineProperties(target, props) {
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
-  Object.defineProperty(Constructor, "prototype", {
-    writable: false
-  });
   return Constructor;
 }
 
@@ -80,7 +51,7 @@ function _defineProperty(obj, key, value) {
 }
 
 function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
+  _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -93,7 +64,42 @@ function _extends() {
 
     return target;
   };
+
   return _extends.apply(this, arguments);
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
 }
 
 function _inherits(subClass, superClass) {
@@ -108,24 +114,22 @@ function _inherits(subClass, superClass) {
       configurable: true
     }
   });
-  Object.defineProperty(subClass, "prototype", {
-    writable: false
-  });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
 
 function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
 }
 
 function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
+
   return _setPrototypeOf(o, p);
 }
 
@@ -135,7 +139,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -189,8 +193,6 @@ function _assertThisInitialized(self) {
 function _possibleConstructorReturn(self, call) {
   if (call && (typeof call === "object" || typeof call === "function")) {
     return call;
-  } else if (call !== void 0) {
-    throw new TypeError("Derived constructors may only return object or undefined");
   }
 
   return _assertThisInitialized(self);
@@ -236,7 +238,7 @@ function _arrayWithoutHoles(arr) {
 }
 
 function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -261,9 +263,9 @@ function _nonIterableSpread() {
 }
 
 function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+  var it;
 
-  if (!it) {
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
     if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
       if (it) o = it;
       var i = 0;
@@ -296,7 +298,7 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
       err;
   return {
     s: function () {
-      it = it.call(o);
+      it = o[Symbol.iterator]();
     },
     n: function () {
       var step = it.next();
