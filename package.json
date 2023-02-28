@@ -33,14 +33,14 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "react-swipeable": "^5.5.1",
+    "react-swipeable": "^7.0.0",
     "resize-observer-polyfill": "1.5.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
     "react": "15 - 18",
     "react-dom": "15 - 18",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -67,14 +67,13 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.1.4",
     "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "gh-pages": "^2.2.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.2",
-    "prettier": "1.14.2",
+    "prettier": "2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-resizable": "^1.7.5",
     "react-scripts": "^2.1.8",
     "rollup": "^1.20.0",
     "rollup-plugin-alias": "^1.4.0",
@@ -87,7 +86,7 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-url": "^1.4.0",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.3.5"
   },
   "files": [
     "dist"

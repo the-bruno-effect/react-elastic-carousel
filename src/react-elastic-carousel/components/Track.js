@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { Swipeable } from "react-swipeable";
+import { useSwipeable } from "react-swipeable";
 import { cssPrefix } from "../utils/helpers";
 import ItemWrapperContainer from "./ItemWrapperContainer";
 
@@ -27,6 +27,14 @@ const Track = ({
   const maxVisibleItem = currentItem + itemsToShow;
   const prevItem = minVisibleItem - itemsToScroll;
   const nextItem = maxVisibleItem + itemsToScroll;
+
+  const handlers = useSwipeable({
+    stopPropagation: true,
+    preventScrollOnSwipe: preventDefaultTouchmoveEvent,
+    trackMouse: enableMouseSwipe,
+    onSwiped: onSwiped,
+    onSwiping: onSwiping,
+  });
 
   const originalChildren = useMemo(
     () => {
@@ -91,17 +99,9 @@ const Track = ({
   );
 
   const toRender = enableSwipe ? (
-    <Swipeable
-      style={styles}
-      stopPropagation
-      preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
-      trackMouse={enableMouseSwipe}
-      onSwiped={onSwiped}
-      onSwiping={onSwiping}
-      className={cssPrefix("swipable")}
-    >
+    <div {...handlers} className={cssPrefix("swipable")} style={styles}>
       {originalChildren}
-    </Swipeable>
+    </div>
   ) : (
     originalChildren
   );
@@ -119,7 +119,7 @@ Track.propTypes = {
   verticalMode: PropTypes.bool,
   enableSwipe: PropTypes.bool,
   enableMouseSwipe: PropTypes.bool,
-  preventDefaultTouchmoveEvent: PropTypes.bool,
+  preventScrollOnSwipe: PropTypes.bool,
   onSwiped: PropTypes.func,
   onSwiping: PropTypes.func,
   onItemClick: PropTypes.func

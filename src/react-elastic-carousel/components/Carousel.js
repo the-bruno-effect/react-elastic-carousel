@@ -405,7 +405,9 @@ class Carousel extends React.Component {
   };
 
   onSwiping = data => {
-    const { deltaX, absX, deltaY, absY, dir } = data;
+    let { deltaX, absX, deltaY, absY, dir } = data;
+
+    deltaX *= -1;
 
     this.setState(state => {
       const { childHeight, activeIndex, sliderPosition } = state;
@@ -799,7 +801,7 @@ class Carousel extends React.Component {
       pagination,
       showArrows,
       disableArrowsOnEnd,
-      preventDefaultTouchmoveEvent,
+      preventScrollOnSwipe,
       renderArrow,
       renderPagination
     } = this.getDerivedPropsFromBreakPoint();
@@ -870,7 +872,7 @@ class Carousel extends React.Component {
                 itemPadding={itemPadding}
                 enableSwipe={enableSwipe}
                 enableMouseSwipe={enableMouseSwipe}
-                preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+                preventScrollOnSwipe={preventScrollOnSwipe}
                 onSwiped={this.onSwiped}
                 onSwiping={this.onSwiping}
                 onItemClick={focusOnSelect ? this.goTo : undefined}
@@ -930,7 +932,7 @@ Carousel.defaultProps = {
   enableTilt: true,
   enableSwipe: true,
   enableMouseSwipe: true,
-  preventDefaultTouchmoveEvent: false,
+  preventScrollOnSwipe: false,
   focusOnSelect: false,
   autoTabIndexVisibleItems: true,
   itemsToShow: 1,
@@ -1045,9 +1047,9 @@ Carousel.propTypes = {
 
   /** Prevent page scroll on touchmove.
    * Use this to stop the browser from scrolling while a user swipes.
-   * More details: https://github.com/FormidableLabs/react-swipeable#preventdefaulttouchmoveevent-details
+   * More details: https://github.com/FormidableLabs/react-swipeable#preventScrollOnSwipe-details
    */
-  preventDefaultTouchmoveEvent: PropTypes.bool,
+  preventScrollOnSwipe: PropTypes.bool,
 
   // auto play
   /** Enable or disable auto play */
